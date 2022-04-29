@@ -13,14 +13,15 @@ import '../services/DashboardService.dart';
 import 'ChatManager.dart';
 
 class DashboardManager extends ChangeNotifier {
+
   late DashboardService dashboardService;
   late StreamSubscription _dashboardStream;
   late List<String> dashboardBasket;
   late bool check = false;
   int index = 0;
 
-  DashboardManager(BuildContext context) {
-    dashboardService = DashboardService(topic: "Dashboard");
+  DashboardManager(BuildContext context, String userId) {
+    dashboardService = DashboardService(topic: "${userId}_Dashboard");
     dashboardBasket = [];
     dashboardChats();
     dashboardStream();
@@ -63,8 +64,6 @@ class DashboardManager extends ChangeNotifier {
                   )));
     });
   }
-
-
 
   @override
   void dispose() {

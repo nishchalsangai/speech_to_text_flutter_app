@@ -1,6 +1,8 @@
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:ninjastudytask/models/Secondary/restaurant.dart';
 import 'package:ninjastudytask/services/ChatDataService.dart';
 import 'package:ninjastudytask/services/secondary/ResService.dart';
@@ -134,11 +136,14 @@ class ChatManager extends ChangeNotifier {
   }
 
   checkMessage(BuildContext context) {
-    MessageBasketHive m = MessageBasketHive()
-      ..message = lastWords
-      ..sentByUser = true;
-    addMessage(m);
-    notifyListeners();
+    MessageBasketHive m;
+    if (lastWords.isNotEmpty) {
+      m = MessageBasketHive()
+        ..message = lastWords
+        ..sentByUser = true;
+      addMessage(m);
+      notifyListeners();
+    }
     if (lastWords.isEmpty ||
         (lastWords.toLowerCase() != expectedReply.toLowerCase().replaceAll(",", ''))) {
       lastWords = '';
@@ -166,8 +171,13 @@ class ChatManager extends ChangeNotifier {
   }
 
   void showInSnackBar(BuildContext context) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text("Your reply is not correct"),
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      backgroundColor: Colors.red,
+      content: Text(
+        "Your reply is not correct",
+        style:
+            GoogleFonts.openSans(fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.w600),
+      ),
     ));
   }
 

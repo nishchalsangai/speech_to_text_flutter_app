@@ -22,7 +22,7 @@ class AuthWidget extends StatelessWidget {
       print("${userSnapshot.data} \n\n\n\n\n\n");
       if (userId != null) {
         return ChangeNotifierProvider(
-            create: (_) => DashboardManager( context), child: const HomePage());
+            create: (_) => DashboardManager(context, userId), child: const HomePage());
       } else {
         return const LogInScreen();
       }

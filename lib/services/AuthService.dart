@@ -46,8 +46,7 @@ class AuthenticationService {
     }
   }
 
-  Future<int> signUp(
-      {required String userEmail, required String userPassword, required String userName}) async {
+  Future<int> signUp({required String userEmail, required String userPassword}) async {
     final encryptionKey = base64Url.decode(_secureKey);
     final encryptedCredentials =
         await Hive.openBox('Credentials', encryptionCipher: HiveAesCipher(encryptionKey));

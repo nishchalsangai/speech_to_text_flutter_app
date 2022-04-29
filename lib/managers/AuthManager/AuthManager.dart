@@ -36,10 +36,18 @@ class AuthManager extends ChangeNotifier {
         notifyListeners();
         context
             .read<AuthenticationService>()
-            .signUp(userEmail: email.text, userPassword: password.text, userName: username.text)
+            .signUp(
+              userEmail: email.text.trim(),
+              userPassword: password.text.trim(),
+            )
             .then((value) {
           print("The value is $value");
+          showInSnackBarSignUp(context, value);
           loading = false;
+          username.clear();
+          email.clear();
+          password.clear();
+          passwordStrength = 0;
           notifyListeners();
           return value;
         });
@@ -47,13 +55,12 @@ class AuthManager extends ChangeNotifier {
     } catch (Ex) {
       print(Ex);
       loading = false;
-      username.clear();
-      email.clear();
-      password.clear();
+      passwordStrength = 0;
       notifyListeners();
       return -1;
     }
     loading = false;
+    passwordStrength = 0;
     notifyListeners();
     return -1;
   }
@@ -61,14 +68,19 @@ class AuthManager extends ChangeNotifier {
   Future<int> signIn(BuildContext context) async {
     try {
       final isValid = loginKey.currentState!.validate();
-      if(email.text.isEmpty || password.text.isEmpty){
-        showInSnackBar(context,0);
-      }
-      else if (isValid) {
+      print("Hey heye heye");
+      print(email.text);
+      print(password.text);
+      if (email.text.isEmpty || password.text.isEmpty) {
+        showInSnackBar(context, 0);
+      } else if (isValid) {
         loginKey.currentState!.save();
         loading = true;
         notifyListeners();
-        context.read<AuthenticationService>().signIn(email.text, password.text).then((value) {
+        context
+            .read<AuthenticationService>()
+            .signIn(email.text.trim(), password.text.trim())
+            .then((value) {
           print("The value is $value");
           loading = false;
           notifyListeners();
@@ -79,7 +91,6 @@ class AuthManager extends ChangeNotifier {
     } catch (Ex) {
       print(Ex);
       loading = false;
-
       notifyListeners();
       return -1;
     }
@@ -110,6 +121,18 @@ class AuthManager extends ChangeNotifier {
     email.clear();
     password.clear();
     await context.read<AuthenticationService>().logOut();
+  }
+
+  void showInSnackBarSignUp(BuildContext context, int val) {
+    val == 0
+        ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+              "User already exist",
+              style: GoogleFonts.openSans(
+                  fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.w600),
+            ),
+          ))
+        : null;
   }
 
   void showInSnackBar(BuildContext context, int val) {
