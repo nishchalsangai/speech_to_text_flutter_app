@@ -65,64 +65,64 @@ class ChatScreen extends StatelessWidget {
                       );
                     },
                   )),
-              bottomNavigationBar: SizedBox(
-                height: 100.h,
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Container(
-                        color: AppColor.headingColor.withOpacity(0.05),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    chatManager.check
-                                        ? chatManager.expectedReply
-                                        : chatManager.lastWords,
-                                    style: GoogleFonts.openSans(
-                                        fontSize: 16.sp,
-                                        color: AppColor.primaryColor,
-                                        fontWeight: FontWeight.w600),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                                AvatarGlow(
-                                  endRadius: 30.r,
-                                  repeat: true,
-                                  glowColor: AppColor.primaryColor,
-                                  animate: chatManager.isListening,
-                                  child: CircleAvatar(
-                                    radius: 20.r,
-                                    backgroundColor: AppColor.headingColor.withOpacity(0.05),
-                                    child: IconButton(
-                                      onPressed: chatManager.check == true
-                                          ? null
-                                          : () => chatManager.listen(),
-                                      icon: const Icon(Icons.mic),
-                                      color: AppColor.headingColor,
+              bottomNavigationBar: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Container(
+                          color: AppColor.headingColor.withOpacity(0.05),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      chatManager.check
+                                          ? chatManager.expectedReply
+                                          : chatManager.lastWords,
+                                      style: GoogleFonts.openSans(
+                                          fontSize: 16.sp,
+                                          color: AppColor.primaryColor,
+                                          fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.center,
                                     ),
                                   ),
-                                ),
-                                IconButton(
-                                  onPressed: chatManager.check == true
-                                      ? null
-                                      : () => chatManager.checkMessage(context),
-                                  icon: const Icon(Icons.send),
-                                  color: AppColor.headingColor,
-                                ),
-                              ],
-                            ),
-                            !chatManager.check
-                                ? Container(
-                                    color: AppColor.accentColor,
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        Expanded(
-                                          child: Text(
+                                  AvatarGlow(
+                                    endRadius: 30.r,
+                                    repeat: true,
+                                    glowColor: AppColor.primaryColor,
+                                    animate: chatManager.isListening,
+                                    child: CircleAvatar(
+                                      radius: 20.r,
+                                      backgroundColor: AppColor.headingColor.withOpacity(0.05),
+                                      child: IconButton(
+                                        onPressed: chatManager.check == true
+                                            ? null
+                                            : () => chatManager.listen(),
+                                        icon: const Icon(Icons.mic),
+                                        color: AppColor.headingColor,
+                                      ),
+                                    ),
+                                  ),
+                                  IconButton(
+                                    onPressed: chatManager.check == true
+                                        ? null
+                                        : () => chatManager.checkMessage(context),
+                                    icon: const Icon(Icons.send),
+                                    color: AppColor.headingColor,
+                                  ),
+                                ],
+                              ),
+                              !chatManager.check
+                                  ? Container(
+                                      color: AppColor.accentColor,
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
                                             "Say the sentence",
                                             style: GoogleFonts.openSans(
                                                 fontSize: 16.sp,
@@ -130,26 +130,27 @@ class ChatScreen extends StatelessWidget {
                                                 fontWeight: FontWeight.w600),
                                             overflow: TextOverflow.ellipsis,
                                           ),
-                                        ),
-                                        Expanded(
-                                          child: Text(
-                                            chatManager.expectedReply,
-                                            style: GoogleFonts.openSans(
-                                                fontSize: 16.sp,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w600),
+                                          Expanded(
+                                            child: Text(
+                                              chatManager.expectedReply,
+                                              style: GoogleFonts.openSans(
+                                                  fontSize: 16.sp,
+                                                  color: Colors.white,
+                                                  fontWeight: FontWeight.w600),
+                                              textAlign: TextAlign.center,
+                                            ),
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  )
-                                : const SizedBox(),
-                          ],
+                                        ],
+                                      ),
+                                    )
+                                  : const SizedBox(),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
+                ],
               ),
             );
     });
