@@ -17,7 +17,7 @@ class ValidateMixin {
 
     if (value!.isEmpty) {
       return 'Enter an email';
-    } else if (!regExp.hasMatch(value)) {
+    } else if (!regExp.hasMatch(value.toString().trim())) {
       return 'Enter a valid email';
     } else {
       return null;
@@ -34,8 +34,8 @@ class ValidateMixin {
 
     if (value!.isEmpty) {
       return 'Enter Password';
-    } else if (!regExp.hasMatch(value)) {
-     /* if (!value.toString().contains(capitalLetterPattern)) {
+    } else if (!regExp.hasMatch(value.toString().trim())) {
+      /* if (!value.toString().contains(capitalLetterPattern)) {
         return 'Password should contain at least one capital letter\n';
       }
       if (!value.toString().contains(smallLetterPattern)) {
@@ -50,7 +50,7 @@ class ValidateMixin {
       if (value.toString().length < 8) {
         return 'Password length should be equal or greater than 8\n';
       }*/
-         return 'Password should contain:\n1)at least one capital letter\n2)at least one small letter\n3)at least one special character\n4)minimum length should be 8';
+      return 'Password should contain:\n1)at least one capital letter\n2)at least one small letter\n3)at least one special character\n4)minimum length should be 8';
     }
     {
       return null;

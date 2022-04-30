@@ -86,7 +86,10 @@ class ChatManager extends ChangeNotifier {
   }
 
   void _initSpeech() async {
-    speechEnabled = await speechToText.initialize();
+    speechEnabled = await speechToText.initialize(
+      onError: errorListener,
+      debugLogging: true,
+    );
     notifyListeners();
   }
 
@@ -219,12 +222,12 @@ class ChatManager extends ChangeNotifier {
     notifyListeners();
   }
 
-  /* errorListener(error) {
+   errorListener(error) {
     changeIsListening();
     print("Received error status: $error, listening: ${speechToText.isListening}");
     var lastError = "${error.errorMsg} - ${error.permanent}";
     print(lastError);
-  }*/
+  }
 
   void listen() async {
     if (!isListening) {
