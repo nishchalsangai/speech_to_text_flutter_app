@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:ninjastudytask/services/UserDataService.dart';
 import 'package:provider/provider.dart';
 
 import '../../services/AuthService.dart';
@@ -16,6 +17,7 @@ class AuthManager extends ChangeNotifier {
   final GlobalKey<FormState> loginKey = GlobalKey<FormState>();
   TextEditingController password = TextEditingController();
   bool isPasswordVisible = true;
+  bool autoValidate = false;
   double passwordStrength = 0;
 
   AuthManager() {
@@ -30,25 +32,31 @@ class AuthManager extends ChangeNotifier {
   Future<int> signUp(BuildContext context) async {
     try {
       final isValid = registerKey.currentState!.validate();
+      autoValidate = true;
       if (isValid) {
-        registerKey.currentState!.save();
+        // registerKey.currentState!.save();
         loading = true;
         notifyListeners();
         context
             .read<AuthenticationService>()
             .signUp(
-              userEmail: email.text.trim(),
+              userEmail: email.text.toLowerCase().trim(),
               userPassword: password.text.trim(),
             )
-            .then((value) {
+            .then((value) async {
           print("The value is $value");
-          showInSnackBarSignUp(context, value);
-          loading = false;
-          username.clear();
-          email.clear();
-          password.clear();
-          passwordStrength = 0;
-          notifyListeners();
+          if (value == 1) {
+            Navigator.of(context).popUntil((route) => route.isFirst);
+            loading = false;
+            username.clear();
+            email.clear();
+            password.clear();
+            passwordStrength = 0;
+            notifyListeners();
+          } else if (value == 0) {
+            showInSnackBarSignUp(context, value);
+          }
+
           return value;
         });
       }
@@ -71,7 +79,7 @@ class AuthManager extends ChangeNotifier {
       print("Hey heye heye");
       print(email.text);
       print(password.text);
-      if (email.text.isEmpty || password.text.isEmpty) {
+      if (email.text.toLowerCase().isEmpty || password.text.isEmpty) {
         showInSnackBar(context, 0);
       } else if (isValid) {
         loginKey.currentState!.save();

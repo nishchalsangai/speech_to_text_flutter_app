@@ -18,7 +18,9 @@ class UserDataService {
   Future<void> saveUserData(String userEmail, String userName) async {
     final userVault = await Hive.openBox('UserData');
     Map userData = {'userEmail': userEmail, 'userName': userName};
-    userVault.put(userEmail, userData);
+    userVault.put(userEmail, userData).then((value) {
+      return 1;
+    });
   }
 
   String? get userEmail {

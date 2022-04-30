@@ -90,9 +90,10 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
                         height: 30.h,
                       ),
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             print("Initiating signup");
-                            authManager.signUp(context).then((value) {
+                            await authManager.signUp(context).then((value) {
+                              print("it;s the values value : $value");
                               if (value == 1) {
                                 print("Successful");
                                 Navigator.of(context).popUntil((route) => route.isFirst);
@@ -100,7 +101,6 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
                                 print("Check your credentials");
                               }
                             });
-                            Navigator.of(context).popUntil((route) => route.isFirst);
                           },
                           child: SizedBox(
                             height: 50.h,
@@ -158,7 +158,9 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
           ],
         ),
         child: TextFormField(
-          // autovalidateMode: AutovalidateMode.always,
+          autovalidateMode: authManager.autoValidate
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
           onChanged: (value) => authManager.strongPasswordCheck(value),
           validator: passwordValidator,
           controller: authManager.password,
@@ -180,7 +182,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
             contentPadding: EdgeInsets.symmetric(horizontal: 25.r, vertical: 15.r),
-            errorStyle: TextStyle(fontSize: 16.0.sp),
+            errorStyle: TextStyle(fontSize: 12.0.sp),
             suffixIcon: IconButton(
               color: AppColor.primaryColor,
               icon: authManager.isPasswordVisible
@@ -235,7 +237,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
             contentPadding: EdgeInsets.symmetric(horizontal: 25.r, vertical: 15.r),
-            errorStyle: TextStyle(fontSize: 16.0.sp),
+            errorStyle: TextStyle(fontSize: 12.0.sp),
           ),
         ),
       );
@@ -282,7 +284,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            errorStyle: const TextStyle(fontSize: 16.0),
+            errorStyle: TextStyle(fontSize: 12.0.sp),
           ),
         ),
       );
