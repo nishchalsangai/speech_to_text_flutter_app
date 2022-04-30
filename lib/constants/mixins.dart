@@ -50,7 +50,7 @@ class ValidateMixin {
       if (value.toString().length < 8) {
         return 'Password length should be equal or greater than 8\n';
       }*/
-         return 'Password should contain:\n1)at least one capital letter\n2)at least one small letter\n3)at least one special character\n4)at least length should be 8';
+         return 'Password should contain:\n1)at least one capital letter\n2)at least one small letter\n3)at least one special character\n4)minimum length should be 8';
     }
     {
       return null;

@@ -59,8 +59,8 @@ class DashboardManager extends ChangeNotifier {
       Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (_) => ChangeNotifierProvider(
-                    create: (_) => ChatManager('Restaurant', _userId),
+              builder: (_) => ChangeNotifierProvider.value(
+                    value: ChatManager('Restaurant', _userId),
                     child: const ChatScreen(),
                   )));
     });
@@ -71,7 +71,7 @@ class DashboardManager extends ChangeNotifier {
         context,
         MaterialPageRoute(
             builder: (_) => ChangeNotifierProvider(
-                  create: (_) => ChatManager('Restaurant', _userId),
+                  create: (context) => ChatManager('Restaurant', _userId),
                   child: const ChatScreen(),
                 )));
   }

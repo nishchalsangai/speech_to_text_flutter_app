@@ -21,19 +21,25 @@ class ChatManager extends ChangeNotifier {
   late List<bool> pronouncedCorrect = [];
   late String expectedReply;
   late ChatDataService chatDataService;
-  int _index = 0;
-  int messagesIndex = 0;
+  late int _index;
+  late int messagesIndex;
   final GlobalKey<AnimatedListState> listKey = GlobalKey();
-  bool glow = false;
-  bool isListening = false;
-  bool check = false;
-  List<dynamic> preSavedChatLength = [];
+  late bool isListening;
+  late bool check;
+  late List<dynamic> preSavedChatLength;
   SpeechToText speechToText = SpeechToText();
-  bool speechEnabled = false;
-  String lastWords = '';
+  late bool speechEnabled;
+  late String lastWords;
 
   ChatManager(String topic, String userId) {
     chatDataService = ChatDataService(topic: "${userId}_${topic}");
+    _index = 0;
+    messagesIndex = 0;
+    isListening = false;
+    check = false;
+    preSavedChatLength = [];
+    speechEnabled = false;
+    lastWords = '';
     initializeChat();
     messagesStream();
   }
@@ -227,6 +233,5 @@ class ChatManager extends ChangeNotifier {
     // TODO: implement dispose
     super.dispose();
     _messagesStream.cancel();
-    /* chatDataService.clearHiveBox();*/
   }
 }
