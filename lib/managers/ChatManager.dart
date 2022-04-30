@@ -40,6 +40,7 @@ class ChatManager extends ChangeNotifier {
     preSavedChatLength = [];
     speechEnabled = false;
     lastWords = '';
+    _initSpeech();
     initializeChat();
     messagesStream();
   }
@@ -84,12 +85,25 @@ class ChatManager extends ChangeNotifier {
     }
   }
 
-  /*void _initSpeech() async {
+  void _initSpeech() async {
     speechEnabled = await speechToText.initialize();
     notifyListeners();
   }
 
-  void startListening() async {
+  timeOut() {
+    Future.delayed(const Duration(milliseconds: 400)).then((value) {
+      isListening = false;
+      notifyListeners();
+    });
+    return const Duration(seconds: 1);
+  }
+
+  checkIfSpeechIsOn() {
+    isListening = speechToText.isListening ? true : false;
+    print(isListening);
+    print("asdasdasdasd");
+  }
+  /* void startListening() async {
     isListening = true;
     await speechToText.listen(
       onResult: _onSpeechResult,
@@ -102,8 +116,8 @@ class ChatManager extends ChangeNotifier {
     notifyListeners();
     await speechToText.stop();
     notifyListeners();
-  }
-*/
+  }*/
+
   void _onSpeechResult(SpeechRecognitionResult result) {
     lastWords = result.recognizedWords;
     isListening = false;
@@ -200,25 +214,34 @@ class ChatManager extends ChangeNotifier {
     }
   }
 
-  Future<void> errorListener(error) async {
-    print("Received error status: $error, listening: ${speechToText.isListening}");
-    var lastError = "${error.errorMsg} - ${error.permanent}";
-    print(lastError);
+  changeIsListening() {
     isListening = false;
     notifyListeners();
   }
 
+  /* errorListener(error) {
+    changeIsListening();
+    print("Received error status: $error, listening: ${speechToText.isListening}");
+    var lastError = "${error.errorMsg} - ${error.permanent}";
+    print(lastError);
+  }*/
+
   void listen() async {
     if (!isListening) {
-      speechEnabled = await speechToText.initialize(
-        onStatus: statusListener,
-        onError: errorListener,
-        debugLogging: true,
-      );
       print("is speech enabled? $speechEnabled");
       if (speechEnabled) {
         isListening = true;
-        await speechToText.listen(onResult: _onSpeechResult);
+
+        notifyListeners();
+        await speechToText.listen(onResult: _onSpeechResult).then((value) {
+          lastWords.isEmpty
+              ? Future.delayed(const Duration(seconds: 2)).then((value) {
+                  isListening = false;
+
+                  notifyListeners();
+                })
+              : null;
+        });
         notifyListeners();
       }
     } else {
@@ -231,6 +254,8 @@ class ChatManager extends ChangeNotifier {
   @override
   void dispose() {
     // TODO: implement dispose
+    speechToText.cancel();
+
     super.dispose();
     _messagesStream.cancel();
   }

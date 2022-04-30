@@ -55,12 +55,11 @@ class DashboardManager extends ChangeNotifier {
   clearChatAndRestart(String topic, BuildContext context) async {
     await dashboardService.clearHiveBox("${_userId}_$topic").then((value) async {
       await addToDashboardVault("${_userId}_$topic", true, false);
-      Navigator.pop(context);
-      Navigator.push(
+      Navigator.pushReplacement(
           context,
           MaterialPageRoute(
-              builder: (_) => ChangeNotifierProvider.value(
-                    value: ChatManager('Restaurant', _userId),
+              builder: (_) => ChangeNotifierProvider(
+                    create: (_) => ChatManager('Restaurant', _userId),
                     child: const ChatScreen(),
                   )));
     });

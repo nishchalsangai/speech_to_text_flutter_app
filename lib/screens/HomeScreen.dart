@@ -17,119 +17,83 @@ class HomePage extends StatelessWidget {
     final authLogOut = Provider.of<AuthManager>(context, listen: false);
     return Consumer<DashboardManager>(builder: (context, homeManager, child) {
       return Scaffold(
-          appBar: AppBar(
-            centerTitle: true,
-            title: GestureDetector(
-              onTap: () {
-                context.read<AuthenticationService>().logOut();
-              },
-              child: Text(
-                "DashBoard",
-                style: GoogleFonts.openSans(
-                    fontSize: 20, color: AppColor.headingColor, fontWeight: FontWeight.w600),
-              ),
+        appBar: AppBar(
+          centerTitle: true,
+          title: GestureDetector(
+            onTap: () {
+              context.read<AuthenticationService>().logOut();
+            },
+            child: Text(
+              "DashBoard",
+              style: GoogleFonts.openSans(
+                  fontSize: 20, color: AppColor.headingColor, fontWeight: FontWeight.w600),
             ),
-            actions: [
-              IconButton(onPressed: () => authLogOut.signOut(context), icon: const Icon(Icons.logout))
-            ],
           ),
-          body: SafeArea(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: Text(
-                      "History",
-                      style: GoogleFonts.openSans(
-                          fontSize: 24, color: AppColor.headingColor, fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.left,
-                    ),
+          actions: [
+            IconButton(onPressed: () => authLogOut.signOut(context), icon: const Icon(Icons.logout))
+          ],
+        ),
+        body: SafeArea(
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
+                  child: Text(
+                    "History",
+                    style: GoogleFonts.openSans(
+                        fontSize: 24, color: AppColor.headingColor, fontWeight: FontWeight.bold),
+                    textAlign: TextAlign.left,
                   ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      itemCount: homeManager.allChats.length,
-                      itemBuilder: (context, index) {
-                        print(homeManager.allChats.length);
-                        return Container(
-                          padding: const EdgeInsets.all(20),
-                          margin: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: const BorderRadius.all(
-                              Radius.circular(16),
+                ),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    itemCount: homeManager.allChats.length,
+                    itemBuilder: (context, index) {
+                      print(homeManager.allChats.length);
+                      return Container(
+                        padding: const EdgeInsets.all(20),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(16),
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.shade100,
+                              blurRadius: 20,
+                              spreadRadius: 10,
                             ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.shade100,
-                                blurRadius: 20,
-                                spreadRadius: 10,
+                          ],
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            CircleAvatar(
+                                radius: 25.r, backgroundImage: AssetImage('assets/spot-197.png')),
+                            SizedBox(
+                              width: 10.w,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: Text(
+                                homeManager.allChats[index].split('_')[1],
+                                style: GoogleFonts.openSans(
+                                    fontSize: 16.sp,
+                                    color: AppColor.headingColor,
+                                    fontWeight: FontWeight.w600),
+                                textAlign: TextAlign.center,
                               ),
-                            ],
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              CircleAvatar(
-                                  radius: 25.r, backgroundImage: AssetImage('assets/spot-197.png')),
-                              SizedBox(
-                                width: 10.w,
-                              ),
-                              Expanded(
-                                flex: 2,
-                                child: Text(
-                                  homeManager.allChats[index].split('_')[1],
-                                  style: GoogleFonts.openSans(
-                                      fontSize: 16.sp,
-                                      color: AppColor.headingColor,
-                                      fontWeight: FontWeight.w600),
-                                  textAlign: TextAlign.center,
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () => homeManager.browseOnPressed(context),
-                                style: ElevatedButton.styleFrom(
-                                  primary: AppColor.accentColor.withOpacity(0.8),
-                                  elevation: 0,
-                                ),
-                                child: Text(
-                                  "Browse",
-                                  style: GoogleFonts.openSans(
-                                      fontSize: 14.sp,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      }),
-                ],
-              ),
-            ),
-          ),
-          floatingActionButton: FloatingActionButton.extended(
-              onPressed: () {
-                showModalBottomSheet(
-                    context: context,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(16.0),
-                        topRight: Radius.circular(16.0),
-                      ),
-                    ),
-                    builder: (context) {
-                      return SizedBox(
-                        height: 200,
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: <Widget>[
-                            GestureDetector(
-                              onTap: () async {
-                                await homeManager.restartOrBrowse('Restaurant', context).then((value) {
+                            ),
+                            ElevatedButton(
+                              onPressed: () async{
+                                await homeManager
+                                    .restartOrBrowse('Restaurant', context)
+                                    .then((value) {
                                   print("it;s home manager check $value");
                                   if (value == true) {
                                     showAlertDialog(context, homeManager);
@@ -139,51 +103,101 @@ class HomePage extends StatelessWidget {
                                   }
                                 });
                               },
-                              child: Container(
-                                padding: const EdgeInsets.all(16.0),
-                                margin: const EdgeInsets.all(16.0),
-                                decoration: BoxDecoration(
-                                    color: AppColor.headingColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(12)),
-                                child: Column(
-                                  children: [
-                                    const CircleAvatar(
-                                        radius: 25, backgroundImage: AssetImage('assets/spot-197.png')),
-                                    const SizedBox(
-                                      height: 5,
-                                    ),
-                                    Text(
-                                      'Restaurant',
-                                      style: GoogleFonts.openSans(
-                                          fontSize: 16,
-                                          color: AppColor.headingColor,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
+                              style: ElevatedButton.styleFrom(
+                                primary: AppColor.accentColor.withOpacity(0.8),
+                                elevation: 0,
                               ),
-                            ),
+                              child: Text(
+                                "Tap",
+                                style: GoogleFonts.openSans(
+                                    fontSize: 14.sp,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600),
+                              ),
+                            )
                           ],
                         ),
                       );
-                    });
-              },
-              label: Row(
-                children: [
-                  const Icon(Icons.add),
-                  const SizedBox(
-                    width: 10,
+                    }),
+              ],
+            ),
+          ),
+        ),
+        floatingActionButton: FloatingActionButton.extended(
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(16.0),
+                      topRight: Radius.circular(16.0),
+                    ),
                   ),
-                  Text(
-                    "New Conversation",
-                    style: GoogleFonts.openSans(
-                        fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
-                  )
-                ],
-              )),
-        );
-      }
-    );
+                  builder: (context) {
+                    return SizedBox(
+                      height: 200,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          GestureDetector(
+                            onTap: () async {
+                              await homeManager
+                                  .restartOrBrowse('Restaurant', context)
+                                  .then((value) {
+                                print("it;s home manager check $value");
+                                if (value == true) {
+                                  showAlertDialog(context, homeManager);
+                                } else {
+                                  homeManager.addToDashboardVault('Restaurant', false, true);
+                                  homeManager.browseOnPressed(context);
+                                }
+                              });
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.all(16.0),
+                              margin: const EdgeInsets.all(16.0),
+                              decoration: BoxDecoration(
+                                  color: AppColor.headingColor.withOpacity(0.1),
+                                  borderRadius: BorderRadius.circular(12)),
+                              child: Column(
+                                children: [
+                                  const CircleAvatar(
+                                      radius: 25,
+                                      backgroundImage: AssetImage('assets/spot-197.png')),
+                                  const SizedBox(
+                                    height: 5,
+                                  ),
+                                  Text(
+                                    'Restaurant',
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 16,
+                                        color: AppColor.headingColor,
+                                        fontWeight: FontWeight.w600),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  });
+            },
+            label: Row(
+              children: [
+                const Icon(Icons.add),
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "New Conversation",
+                  style: GoogleFonts.openSans(
+                      fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+                )
+              ],
+            )),
+      );
+    });
   }
 
   showAlertDialog(BuildContext context, DashboardManager homeManager) {
