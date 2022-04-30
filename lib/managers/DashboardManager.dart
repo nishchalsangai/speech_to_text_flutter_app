@@ -13,15 +13,16 @@ import '../services/DashboardService.dart';
 import 'ChatManager.dart';
 
 class DashboardManager extends ChangeNotifier {
-
   late DashboardService dashboardService;
   late StreamSubscription _dashboardStream;
   late List<String> dashboardBasket;
   late bool check = false;
   int index = 0;
+  late String _userId;
 
   DashboardManager(BuildContext context, String userId) {
     dashboardService = DashboardService(topic: "${userId}_Dashboard");
+    _userId = userId;
     dashboardBasket = [];
     dashboardChats();
     dashboardStream();
@@ -35,7 +36,7 @@ class DashboardManager extends ChangeNotifier {
   }
 
   addToDashboardVault(String value, bool isRestarted, bool firstTime) async {
-    await dashboardService.addToDashBoard(value, isRestarted, firstTime);
+    await dashboardService.addToDashBoard("${_userId}_${value}", isRestarted, firstTime);
   }
 
   dashboardChats() async {
@@ -47,22 +48,32 @@ class DashboardManager extends ChangeNotifier {
   }
 
   restartOrBrowse(String topic, BuildContext context) async {
-    check = (await dashboardService.checkIfBoxExist(topic))!;
+    check = (await dashboardService.checkIfBoxExist("${_userId}_${topic}"))!;
     return check;
   }
 
   clearChatAndRestart(String topic, BuildContext context) async {
-    await dashboardService.clearHiveBox(topic).then((value) async {
-      await addToDashboardVault(topic, true, false);
+    await dashboardService.clearHiveBox("${_userId}_$topic").then((value) async {
+      await addToDashboardVault("${_userId}_$topic", true, false);
       Navigator.pop(context);
       Navigator.push(
           context,
           MaterialPageRoute(
               builder: (_) => ChangeNotifierProvider(
-                    create: (_) => ChatManager('Restaurant'),
+                    create: (_) => ChatManager('Restaurant', _userId),
                     child: const ChatScreen(),
                   )));
     });
+  }
+
+  browseOnPressed(BuildContext context) {
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (_) => ChangeNotifierProvider(
+                  create: (_) => ChatManager('Restaurant', _userId),
+                  child: const ChatScreen(),
+                )));
   }
 
   @override

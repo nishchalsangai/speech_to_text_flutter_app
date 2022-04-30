@@ -73,25 +73,24 @@ class HomePage extends StatelessWidget {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const CircleAvatar(
-                              radius: 25, backgroundImage: AssetImage('assets/spot-197.png')),
-                          Text(
-                            homeManager.allChats[index],
-                            style: GoogleFonts.openSans(
-                                fontSize: 16,
-                                color: AppColor.headingColor,
-                                fontWeight: FontWeight.w600),
+                          CircleAvatar(
+                              radius: 25.r, backgroundImage: AssetImage('assets/spot-197.png')),
+                          SizedBox(
+                            width: 10.w,
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: Text(
+                              homeManager.allChats[index].split('_')[1],
+                              style: GoogleFonts.openSans(
+                                  fontSize: 16.sp,
+                                  color: AppColor.headingColor,
+                                  fontWeight: FontWeight.w600),
+                              textAlign: TextAlign.center,
+                            ),
                           ),
                           ElevatedButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => ChangeNotifierProvider(
-                                            create: (_) => ChatManager('Restaurant'),
-                                            child: const ChatScreen(),
-                                          )));
-                            },
+                            onPressed: () => homeManager.browseOnPressed(context),
                             style: ElevatedButton.styleFrom(
                               primary: AppColor.accentColor.withOpacity(0.8),
                               elevation: 0,
@@ -99,7 +98,9 @@ class HomePage extends StatelessWidget {
                             child: Text(
                               "Browse",
                               style: GoogleFonts.openSans(
-                                  fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+                                  fontSize: 14.sp,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w600),
                             ),
                           )
                         ],
@@ -134,13 +135,7 @@ class HomePage extends StatelessWidget {
                                 showAlertDialog(context, homeManager);
                               } else {
                                 homeManager.addToDashboardVault('Restaurant', false, true);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => ChangeNotifierProvider(
-                                              create: (_) => ChatManager('Restaurant'),
-                                              child: const ChatScreen(),
-                                            )));
+                                homeManager.browseOnPressed(context);
                               }
                             });
                           },
@@ -199,15 +194,7 @@ class HomePage extends StatelessWidget {
       child: const Text("Browse"),
       onPressed: () {
         Navigator.pop(context);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => ChangeNotifierProvider(
-              create: (_) => ChatManager('Restaurant'),
-              child: const ChatScreen(),
-            ),
-          ),
-        );
+        homeManager.browseOnPressed(context);
       },
     );
 

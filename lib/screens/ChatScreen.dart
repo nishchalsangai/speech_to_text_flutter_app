@@ -66,94 +66,98 @@ class ChatScreen extends StatelessWidget {
                     },
                   )),
               bottomNavigationBar: SizedBox(
-                height: 60.h,
+                height: 100.h,
                 child: Row(
                   children: [
                     Expanded(
                       child: Container(
-                        margin: EdgeInsets.only(left: 5.r, bottom: 5.r),
-                        decoration: BoxDecoration(
-                          color: AppColor.headingColor.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(30.r),
-                        ),
+                        color: AppColor.headingColor.withOpacity(0.05),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Flexible(
-                              child: Text(
-                                chatManager.check
-                                    ? "Well done!!"
-                                    : chatManager.lastWords.isNotEmpty
-                                        ? "You said"
-                                        : "Say the below sentence",
-                                style: GoogleFonts.openSans(
-                                    fontSize: 12.sp,
-                                    color: AppColor.headingColor,
-                                    fontWeight: FontWeight.w600),
-                                overflow: TextOverflow.ellipsis,
-                              ),
+                            /* !chatManager.check
+                                ? Flexible(
+                                    child: Text(
+                                      "You said",
+                                      style: GoogleFonts.openSans(
+                                          fontSize: 12.sp,
+                                          color: AppColor.headingColor,
+                                          fontWeight: FontWeight.w600),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  )
+                                : const SizedBox(),*/
+                            Row(
+                              children: [
+                                !chatManager.check
+                                    ? Expanded(
+                                        child: Text(
+                                          chatManager.lastWords,
+                                          style: GoogleFonts.openSans(
+                                              fontSize: 16.sp,
+                                              color: AppColor.primaryColor,
+                                              fontWeight: FontWeight.w600),
+                                          textAlign: TextAlign.center,
+                                        ),
+                                      )
+                                    : const SizedBox(),
+                                AvatarGlow(
+                                  endRadius: 30.r,
+                                  repeat: true,
+                                  glowColor: AppColor.primaryColor,
+                                  animate: chatManager.isListening,
+                                  child: CircleAvatar(
+                                    radius: 20.r,
+                                    backgroundColor: AppColor.headingColor.withOpacity(0.05),
+                                    child: IconButton(
+                                      onPressed: chatManager.check == true
+                                          ? null
+                                          : () => chatManager.listen(),
+                                      icon: const Icon(Icons.mic),
+                                      color: AppColor.headingColor,
+                                    ),
+                                  ),
+                                ),
+                                IconButton(
+                                  onPressed: chatManager.check == true
+                                      ? null
+                                      : () => chatManager.checkMessage(context),
+                                  icon: const Icon(Icons.send),
+                                  color: AppColor.headingColor,
+                                ),
+                              ],
                             ),
-                            Flexible(
-                              child: Text(
-                                chatManager.lastWords.isNotEmpty
-                                    ? chatManager.lastWords
-                                    : chatManager.expectedReply,
-                                style: GoogleFonts.openSans(
-                                    fontSize: 16.sp,
-                                    color: AppColor.primaryColor,
-                                    fontWeight: FontWeight.w600),
+                            Container(
+                              color: AppColor.accentColor,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Flexible(
+                                    child: Text(
+                                      chatManager.check ? "Well done!!" : "Say the sentence",
+                                      style: GoogleFonts.openSans(
+                                          fontSize: 16.sp,
+                                          color: AppColor.headingColor,
+                                          fontWeight: FontWeight.w600),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Flexible(
+                                    child: Text(
+                                      chatManager.expectedReply,
+                                      style: GoogleFonts.openSans(
+                                          fontSize: 16.sp,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ],
                         ),
                       ),
                     ),
-                    chatManager.glow
-                        ? AvatarGlow(
-                            endRadius: 30.r,
-                            repeat: true,
-                            glowColor: AppColor.primaryColor,
-                            animate: chatManager.glow,
-                            child: CircleAvatar(
-                              radius: 20.r,
-                              backgroundColor: AppColor.headingColor.withOpacity(0.05),
-                              child: IconButton(
-                                onPressed: chatManager.check == true
-                                    ? null
-                                    : () => chatManager.speechToText.isNotListening
-                                        ? chatManager.startListening()
-                                        : chatManager.stopListening(),
-                                icon: const Icon(Icons.mic),
-                                color: AppColor.headingColor,
-                              ),
-                            ),
-                          )
-                        : AvatarGlow(
-                            endRadius: 30.r,
-                            repeat: false,
-                            glowColor: AppColor.primaryColor,
-                            animate: false,
-                            child: CircleAvatar(
-                              radius: 20.r,
-                              backgroundColor: AppColor.headingColor.withOpacity(0.05),
-                              child: IconButton(
-                                onPressed: chatManager.check == true
-                                    ? null
-                                    : () => chatManager.speechToText.isNotListening
-                                        ? chatManager.startListening()
-                                        : chatManager.stopListening(),
-                                icon: const Icon(Icons.mic),
-                                color: AppColor.headingColor,
-                              ),
-                            ),
-                          ),
-                    IconButton(
-                      onPressed: chatManager.check == true
-                          ? null
-                          : () => chatManager.checkMessage(context),
-                      icon: const Icon(Icons.send),
-                      color: AppColor.headingColor,
-                    )
                   ],
                 ),
               ),

@@ -101,6 +101,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
                                 print("Check your credentials");
                               }
                             });
+
                           },
                           child: SizedBox(
                             height: 50.h,
@@ -158,9 +159,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
           ],
         ),
         child: TextFormField(
-          autovalidateMode: authManager.autoValidate
-              ? AutovalidateMode.onUserInteraction
-              : AutovalidateMode.disabled,
+          autovalidateMode:authManager.autoValidate ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
           onChanged: (value) => authManager.strongPasswordCheck(value),
           validator: passwordValidator,
           controller: authManager.password,
@@ -264,7 +263,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
           validator: emailValidator,
           controller: authManager.email,
           style: GoogleFonts.openSans(
-              fontSize: 16, color: AppColor.headingColor, fontWeight: FontWeight.w600),
+              fontSize: 16.sp, color: AppColor.headingColor, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             filled: true,
             hintText: 'Email',
@@ -284,7 +283,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            errorStyle: TextStyle(fontSize: 12.0.sp),
+            errorStyle:  TextStyle(fontSize: 12.0.sp),
           ),
         ),
       );

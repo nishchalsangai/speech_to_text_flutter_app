@@ -86,14 +86,14 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
                               Text(
                                 "New to the app? ",
                                 style: GoogleFonts.openSans(
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     color: AppColor.headingColor,
                                     fontWeight: FontWeight.w600),
                               ),
                               Text(
                                 "Register here!",
                                 style: GoogleFonts.openSans(
-                                    fontSize: 14,
+                                    fontSize: 14.sp,
                                     color: AppColor.primaryColor,
                                     fontWeight: FontWeight.w600),
                               )
@@ -118,7 +118,7 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
           child: Text(
             "OR",
             style: GoogleFonts.openSans(
-                fontSize: 12, color: AppColor.headingColor, fontWeight: FontWeight.w600),
+                fontSize: 12.sp, color: AppColor.headingColor, fontWeight: FontWeight.w600),
           ),
         ),
         const Expanded(child: Divider()),
@@ -130,14 +130,14 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
     return Consumer<AuthManager>(builder: (context, authManager, child) {
       return Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
+          borderRadius: BorderRadius.all(
+            Radius.circular(16.r),
           ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade100,
-              blurRadius: 20,
-              spreadRadius: 10,
+              blurRadius: 20.r,
+              spreadRadius: 10.r,
             ),
           ],
         ),
@@ -146,13 +146,13 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
           controller: authManager.password,
           obscureText: authManager.isPasswordVisible,
           style: GoogleFonts.openSans(
-              fontSize: 16, color: AppColor.headingColor, fontWeight: FontWeight.w600),
+              fontSize: 16.sp, color: AppColor.headingColor, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             focusColor: AppColor.primaryColor,
             filled: true,
             fillColor: Colors.white,
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide.none),
             hintStyle: GoogleFonts.openSans(
                 fontSize: 14, color: AppColor.headingColor, fontWeight: FontWeight.w600),
             prefixIcon: const Icon(
@@ -161,8 +161,8 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
             ),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            errorStyle: const TextStyle(fontSize: 16.0),
+            contentPadding: EdgeInsets.symmetric(horizontal: 25.r, vertical: 15.r),
+            errorStyle: TextStyle(fontSize: 12.0.sp),
             suffixIcon: IconButton(
               color: AppColor.primaryColor,
               icon: authManager.isPasswordVisible
@@ -181,14 +181,14 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
     return Consumer<AuthManager>(builder: (context, authManager, child) {
       return Container(
         decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(16),
+          borderRadius: BorderRadius.all(
+            Radius.circular(16.r),
           ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.shade100,
-              blurRadius: 20,
-              spreadRadius: 10,
+              blurRadius: 20.r,
+              spreadRadius: 10.r,
             ),
           ],
         ),
@@ -197,15 +197,15 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
           controller: authManager.email,
           // validator: emailValidator,
           style: GoogleFonts.openSans(
-              fontSize: 16, color: AppColor.headingColor, fontWeight: FontWeight.w600),
+              fontSize: 16.sp, color: AppColor.headingColor, fontWeight: FontWeight.w600),
           decoration: InputDecoration(
             filled: true,
             hintText: 'Email',
             fillColor: Colors.white,
             border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+                borderRadius: BorderRadius.circular(16.r), borderSide: BorderSide.none),
             hintStyle: GoogleFonts.openSans(
-                fontSize: 14, color: AppColor.headingColor, fontWeight: FontWeight.w600),
+                fontSize: 14.sp, color: AppColor.headingColor, fontWeight: FontWeight.w600),
             prefixIcon: const Icon(
               Icons.email_rounded,
               color: AppColor.primaryColor,
@@ -216,8 +216,8 @@ class LogInScreen extends StatelessWidget with ValidateMixin {
             ),
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
-            contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            errorStyle: const TextStyle(fontSize: 16.0),
+            contentPadding: EdgeInsets.symmetric(horizontal: 25.r, vertical: 15.r),
+            errorStyle: TextStyle(fontSize: 12.0.sp),
           ),
         ),
       );

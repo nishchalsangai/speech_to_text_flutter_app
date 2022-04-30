@@ -25,15 +25,15 @@ class ChatManager extends ChangeNotifier {
   int messagesIndex = 0;
   final GlobalKey<AnimatedListState> listKey = GlobalKey();
   bool glow = false;
+  bool isListening = false;
   bool check = false;
   List<dynamic> preSavedChatLength = [];
   SpeechToText speechToText = SpeechToText();
   bool speechEnabled = false;
   String lastWords = '';
 
-  ChatManager(String topic) {
-    chatDataService = ChatDataService(topic: topic);
-    _initSpeech();
+  ChatManager(String topic, String userId) {
+    chatDataService = ChatDataService(topic: "${userId}_${topic}");
     initializeChat();
     messagesStream();
   }
@@ -78,31 +78,29 @@ class ChatManager extends ChangeNotifier {
     }
   }
 
-  void _initSpeech() async {
+  /*void _initSpeech() async {
     speechEnabled = await speechToText.initialize();
     notifyListeners();
   }
 
   void startListening() async {
-    glow = true;
+    isListening = true;
     await speechToText.listen(
-        onResult: _onSpeechResult,
-        listenFor: glow ? const Duration(days: 365) : const Duration(seconds: 0),
-        pauseFor: const Duration(seconds: 5),
-        partialResults: true,
-        listenMode: ListenMode.confirmation);
+      onResult: _onSpeechResult,
+    );
     notifyListeners();
   }
 
   void stopListening() async {
-    glow = false;
+    isListening = false;
+    notifyListeners();
     await speechToText.stop();
     notifyListeners();
   }
-
+*/
   void _onSpeechResult(SpeechRecognitionResult result) {
     lastWords = result.recognizedWords;
-    glow = false;
+    isListening = false;
     notifyListeners();
   }
 
@@ -172,7 +170,8 @@ class ChatManager extends ChangeNotifier {
 
   void showInSnackBar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      backgroundColor: Colors.red,
+      elevation: 0,
+      backgroundColor: Colors.red.shade200,
       content: Text(
         "Your reply is not correct",
         style:
@@ -184,6 +183,41 @@ class ChatManager extends ChangeNotifier {
   checkIndex() {
     if (_index == resChat.length) {
       check = true;
+      notifyListeners();
+    }
+  }
+
+  statusListener(val) {
+    if (val == 'notListening') {
+      isListening = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> errorListener(error) async {
+    print("Received error status: $error, listening: ${speechToText.isListening}");
+    var lastError = "${error.errorMsg} - ${error.permanent}";
+    print(lastError);
+    isListening = false;
+    notifyListeners();
+  }
+
+  void listen() async {
+    if (!isListening) {
+      speechEnabled = await speechToText.initialize(
+        onStatus: statusListener,
+        onError: errorListener,
+        debugLogging: true,
+      );
+      print("is speech enabled? $speechEnabled");
+      if (speechEnabled) {
+        isListening = true;
+        await speechToText.listen(onResult: _onSpeechResult);
+        notifyListeners();
+      }
+    } else {
+      isListening = false;
+      speechToText.stop();
       notifyListeners();
     }
   }
