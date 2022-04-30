@@ -75,32 +75,20 @@ class ChatScreen extends StatelessWidget {
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            /* !chatManager.check
-                                ? Flexible(
-                                    child: Text(
-                                      "You said",
-                                      style: GoogleFonts.openSans(
-                                          fontSize: 12.sp,
-                                          color: AppColor.headingColor,
-                                          fontWeight: FontWeight.w600),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  )
-                                : const SizedBox(),*/
                             Row(
                               children: [
-                                !chatManager.check
-                                    ? Expanded(
-                                        child: Text(
-                                          chatManager.lastWords,
-                                          style: GoogleFonts.openSans(
-                                              fontSize: 16.sp,
-                                              color: AppColor.primaryColor,
-                                              fontWeight: FontWeight.w600),
-                                          textAlign: TextAlign.center,
-                                        ),
-                                      )
-                                    : const SizedBox(),
+                                Expanded(
+                                  child: Text(
+                                    chatManager.check
+                                        ? chatManager.expectedReply
+                                        : chatManager.lastWords,
+                                    style: GoogleFonts.openSans(
+                                        fontSize: 16.sp,
+                                        color: AppColor.primaryColor,
+                                        fontWeight: FontWeight.w600),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
                                 AvatarGlow(
                                   endRadius: 30.r,
                                   repeat: true,
@@ -127,33 +115,35 @@ class ChatScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
-                            Container(
-                              color: AppColor.accentColor,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                children: [
-                                  Flexible(
-                                    child: Text(
-                                      chatManager.check ? "Well done!!" : "Say the sentence",
-                                      style: GoogleFonts.openSans(
-                                          fontSize: 16.sp,
-                                          color: AppColor.headingColor,
-                                          fontWeight: FontWeight.w600),
-                                      overflow: TextOverflow.ellipsis,
+                            !chatManager.check
+                                ? Container(
+                                    color: AppColor.accentColor,
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                      children: [
+                                        Expanded(
+                                          child: Text(
+                                            "Say the sentence",
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 16.sp,
+                                                color: AppColor.headingColor,
+                                                fontWeight: FontWeight.w600),
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
+                                        ),
+                                        Expanded(
+                                          child: Text(
+                                            chatManager.expectedReply,
+                                            style: GoogleFonts.openSans(
+                                                fontSize: 16.sp,
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ),
+                                      ],
                                     ),
-                                  ),
-                                  Flexible(
-                                    child: Text(
-                                      chatManager.expectedReply,
-                                      style: GoogleFonts.openSans(
-                                          fontSize: 16.sp,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
+                                  )
+                                : const SizedBox(),
                           ],
                         ),
                       ),

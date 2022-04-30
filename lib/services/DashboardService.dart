@@ -15,6 +15,7 @@ class DashboardService {
 
   addToDashBoard(String value, bool isRestarted, bool firstTime) async {
     final allChatVault = await Hive.openBox(_topic);
+    print(value);
     allChatVault.put("${value}_1", value).then((val) {
       isRestarted
           ? null
@@ -27,12 +28,14 @@ class DashboardService {
   addLastlyAddedChat(String value) async {
     final allChatVault = await Hive.openBox(_topic);
     var str = allChatVault.get("${value}_1");
+    print(str);
     _controller.sink.add(str);
   }
 
   getAllChatsOnDashboard() async {
     final allChatVault = await Hive.openBox(_topic);
     for (final ele in allChatVault.values) {
+      print(ele);
       _controller.sink.add(ele);
     }
   }

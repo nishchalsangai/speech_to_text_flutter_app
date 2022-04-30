@@ -54,7 +54,7 @@ class DashboardManager extends ChangeNotifier {
 
   clearChatAndRestart(String topic, BuildContext context) async {
     await dashboardService.clearHiveBox("${_userId}_$topic").then((value) async {
-      await addToDashboardVault("${_userId}_$topic", true, false);
+      await addToDashboardVault(topic, true, false);
       Navigator.pushReplacement(
           context,
           MaterialPageRoute(
@@ -79,5 +79,6 @@ class DashboardManager extends ChangeNotifier {
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _dashboardStream.cancel();
   }
 }

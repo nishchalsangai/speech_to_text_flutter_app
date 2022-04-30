@@ -92,7 +92,8 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
                       ElevatedButton(
                           onPressed: () async {
                             print("Initiating signup");
-                            await authManager.signUp(context).then((value) {
+                            await authManager.signUp(
+                                    context) /*.then((value) {
                               print("it;s the values value : $value");
                               if (value == 1) {
                                 print("Successful");
@@ -100,8 +101,8 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
                               } else {
                                 print("Check your credentials");
                               }
-                            });
-
+                            })*/
+                                ;
                           },
                           child: SizedBox(
                             height: 50.h,
@@ -159,7 +160,9 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
           ],
         ),
         child: TextFormField(
-          autovalidateMode:authManager.autoValidate ? AutovalidateMode.onUserInteraction : AutovalidateMode.disabled,
+          autovalidateMode: authManager.autoValidate
+              ? AutovalidateMode.onUserInteraction
+              : AutovalidateMode.disabled,
           onChanged: (value) => authManager.strongPasswordCheck(value),
           validator: passwordValidator,
           controller: authManager.password,
@@ -283,7 +286,7 @@ class SignUpScreen extends StatelessWidget with ValidateMixin {
             floatingLabelBehavior: FloatingLabelBehavior.always,
             hintMaxLines: 1,
             contentPadding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
-            errorStyle:  TextStyle(fontSize: 12.0.sp),
+            errorStyle: TextStyle(fontSize: 12.0.sp),
           ),
         ),
       );

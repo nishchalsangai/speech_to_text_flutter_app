@@ -80,7 +80,7 @@ class AuthManager extends ChangeNotifier {
       print(email.text);
       print(password.text);
       if (email.text.toLowerCase().isEmpty || password.text.isEmpty) {
-        showInSnackBar(context, 0);
+        showInSnackBar(context, 2);
       } else if (isValid) {
         loginKey.currentState!.save();
         loading = true;
@@ -153,7 +153,7 @@ class AuthManager extends ChangeNotifier {
                   fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.w600),
             ),
           ))
-        : val == 0
+        : val == 2
             ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 backgroundColor: Colors.red,
                 content: Text(
@@ -162,7 +162,16 @@ class AuthManager extends ChangeNotifier {
                       fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.w600),
                 ),
               ))
-            : null;
+            : val == 0
+                ? ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      "Incorrect password!",
+                      style: GoogleFonts.openSans(
+                          fontSize: 13.sp, color: Colors.white, fontWeight: FontWeight.w600),
+                    ),
+                  ))
+                : null;
   }
 
   @override

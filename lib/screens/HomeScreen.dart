@@ -15,6 +15,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authLogOut = Provider.of<AuthManager>(context, listen: false);
+    final authUserId = Provider.of<AuthManager>(context, listen: false).email;
     return Consumer<DashboardManager>(builder: (context, homeManager, child) {
       return Scaffold(
         appBar: AppBar(
@@ -54,70 +55,74 @@ class HomePage extends StatelessWidget {
                     itemCount: homeManager.allChats.length,
                     itemBuilder: (context, index) {
                       print(homeManager.allChats.length);
-                      return Container(
-                        padding: const EdgeInsets.all(20),
-                        margin: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(16),
-                          ),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.shade100,
-                              blurRadius: 20,
-                              spreadRadius: 10,
-                            ),
-                          ],
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CircleAvatar(
-                                radius: 25.r, backgroundImage: AssetImage('assets/spot-197.png')),
-                            SizedBox(
-                              width: 10.w,
-                            ),
-                            Expanded(
-                              flex: 2,
-                              child: Text(
-                                homeManager.allChats[index].split('_')[1],
-                                style: GoogleFonts.openSans(
-                                    fontSize: 16.sp,
-                                    color: AppColor.headingColor,
-                                    fontWeight: FontWeight.w600),
-                                textAlign: TextAlign.center,
+                      return homeManager.allChats[index].split('_')[1] != authUserId
+                          ? Container(
+                              padding: const EdgeInsets.all(20),
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: const BorderRadius.all(
+                                  Radius.circular(16),
+                                ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.shade100,
+                                    blurRadius: 20,
+                                    spreadRadius: 10,
+                                  ),
+                                ],
                               ),
-                            ),
-                            ElevatedButton(
-                              onPressed: () async{
-                                await homeManager
-                                    .restartOrBrowse('Restaurant', context)
-                                    .then((value) {
-                                  print("it;s home manager check $value");
-                                  if (value == true) {
-                                    showAlertDialog(context, homeManager);
-                                  } else {
-                                    homeManager.addToDashboardVault('Restaurant', false, true);
-                                    homeManager.browseOnPressed(context);
-                                  }
-                                });
-                              },
-                              style: ElevatedButton.styleFrom(
-                                primary: AppColor.accentColor.withOpacity(0.8),
-                                elevation: 0,
-                              ),
-                              child: Text(
-                                "Tap",
-                                style: GoogleFonts.openSans(
-                                    fontSize: 14.sp,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w600),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  CircleAvatar(
+                                      radius: 25.r,
+                                      backgroundImage: AssetImage('assets/spot-197.png')),
+                                  SizedBox(
+                                    width: 10.w,
+                                  ),
+                                  Expanded(
+                                    flex: 2,
+                                    child: Text(
+                                      homeManager.allChats[index].split('_')[1],
+                                      style: GoogleFonts.openSans(
+                                          fontSize: 16.sp,
+                                          color: AppColor.headingColor,
+                                          fontWeight: FontWeight.w600),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      await homeManager
+                                          .restartOrBrowse('Restaurant', context)
+                                          .then((value) {
+                                        print("it;s home manager check $value");
+                                        if (value == true) {
+                                          showAlertDialog(context, homeManager);
+                                        } else {
+                                          homeManager.addToDashboardVault(
+                                              'Restaurant', false, true);
+                                          homeManager.browseOnPressed(context);
+                                        }
+                                      });
+                                    },
+                                    style: ElevatedButton.styleFrom(
+                                      primary: AppColor.accentColor.withOpacity(0.8),
+                                      elevation: 0,
+                                    ),
+                                    child: Text(
+                                      "Tap",
+                                      style: GoogleFonts.openSans(
+                                          fontSize: 14.sp,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  )
+                                ],
                               ),
                             )
-                          ],
-                        ),
-                      );
+                          : const SizedBox();
                     }),
               ],
             ),
